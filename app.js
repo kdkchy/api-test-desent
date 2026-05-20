@@ -1,5 +1,6 @@
 const express = require('express');
 const { sendError } = require('./infra/response/defaultResponse');
+const authController = require('./controller/authController');
 const bookController = require('./controller/bookController');
 const healthController = require('./controller/healthController');
 
@@ -11,6 +12,7 @@ const createApp = () => {
   app.use(express.json());
 
   app.use('/', healthController);
+  app.use('/auth', authController);
   app.use('/books', bookController);
 
   app.use((req, res) => {

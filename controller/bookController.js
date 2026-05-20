@@ -1,6 +1,7 @@
 const express = require('express');
 const { sendError } = require('../infra/response/defaultResponse');
 const bookService = require('../services/bookService');
+const { requireAuth } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.post('/', (req, res) => {
   return res.status(201).json(result.data);
 });
 
-router.get('/', (req, res) => {
+router.get('/', requireAuth, (req, res) => {
   const books = bookService.getBooks();
 
   return res.status(200).json(books);
