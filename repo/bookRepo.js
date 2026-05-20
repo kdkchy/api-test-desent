@@ -1,5 +1,30 @@
-const books = [];
-let nextBookId = 1;
+const books = [
+  {
+    id: 1,
+    title: 'The Pragmatic Programmer',
+    author: 'Andrew Hunt',
+    year: 1999,
+    created_at: '2026-05-20T00:00:00.000Z',
+    updated_at: '2026-05-20T00:00:00.000Z',
+  },
+  {
+    id: 2,
+    title: 'Clean Code',
+    author: 'Robert C. Martin',
+    year: 2008,
+    created_at: '2026-05-20T00:00:00.000Z',
+    updated_at: '2026-05-20T00:00:00.000Z',
+  },
+  {
+    id: 3,
+    title: 'Refactoring',
+    author: 'Martin Fowler',
+    year: 1999,
+    created_at: '2026-05-20T00:00:00.000Z',
+    updated_at: '2026-05-20T00:00:00.000Z',
+  },
+];
+let nextBookId = 4;
 
 const getTimestamp = () => new Date().toISOString();
 
