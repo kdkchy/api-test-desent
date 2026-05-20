@@ -3,7 +3,7 @@ const healthRepo = require('../repo/healthRepo');
 const getHealth = () => {
   return {
     service: 'api_test',
-    database: healthRepo.getDatabaseHealth(),
+    storage: healthRepo.getStorageHealth(),
   };
 };
 

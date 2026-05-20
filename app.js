@@ -1,14 +1,11 @@
 const express = require('express');
 const { sendError } = require('./infra/response/defaultResponse');
-const { initializeDatabase } = require('./infra/db');
 const bookController = require('./controller/bookController');
 const healthController = require('./controller/healthController');
 
 const port = process.env.PORT || 3000;
 
 const createApp = () => {
-  initializeDatabase();
-
   const app = express();
 
   app.use(express.json());

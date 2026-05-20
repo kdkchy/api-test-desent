@@ -1,16 +1,11 @@
-const { getDatabase } = require('../infra/db');
-
-const getDatabaseHealth = () => {
-  const db = getDatabase();
-  const row = db.prepare('SELECT sqlite_version() AS version').get();
-
+const getStorageHealth = () => {
   return {
-    engine: 'sqlite',
+    engine: 'memory',
     connected: true,
-    version: row.version,
+    persistent: false,
   };
 };
 
 module.exports = {
-  getDatabaseHealth,
+  getStorageHealth,
 };

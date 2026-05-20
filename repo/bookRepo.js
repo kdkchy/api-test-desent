@@ -1,66 +1,59 @@
-const { getDatabase } = require('../infra/db');
+const books = [];
+let nextBookId = 1;
+
+const getTimestamp = () => new Date().toISOString();
+
+const cloneBook = (book) => ({ ...book });
 
 const createBook = ({ title, author = null }) => {
-  const db = getDatabase();
-  const result = db
-    .prepare('INSERT INTO books (title, author) VALUES (?, ?)')
-    .run(title, author);
+  const now = getTimestamp();
+  const book = {
+    id: nextBookId,
+    title,
+    author,
+    created_at: now,
+    updated_at: now,
+  };
 
-  return getBookById(Number(result.lastInsertRowid));
+  nextBookId += 1;
+  books.push(book);
+
+  return cloneBook(book);
 };
 
 const getBooks = () => {
-  const db = getDatabase();
-
-  return db
-    .prepare(
-      `
-      SELECT id, title, author, created_at, updated_at
-      FROM books
-      ORDER BY id ASC
-      `,
-    )
-    .all();
+  return books.map(cloneBook);
 };
 
 const getBookById = (id) => {
-  const db = getDatabase();
+  const book = books.find((item) => item.id === id);
 
-  return db
-    .prepare(
-      `
-      SELECT id, title, author, created_at, updated_at
-      FROM books
-      WHERE id = ?
-      `,
-    )
-    .get(id);
+  return book ? cloneBook(book) : undefined;
 };
 
 const updateBook = (id, { title, author = null }) => {
-  const db = getDatabase();
-  const result = db
-    .prepare(
-      `
-      UPDATE books
-      SET title = ?, author = ?, updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-      `,
-    )
-    .run(title, author, id);
+  const book = books.find((item) => item.id === id);
 
-  if (result.changes === 0) {
+  if (!book) {
     return null;
   }
 
-  return getBookById(id);
+  book.title = title;
+  book.author = author;
+  book.updated_at = getTimestamp();
+
+  return cloneBook(book);
 };
 
 const deleteBook = (id) => {
-  const db = getDatabase();
-  const result = db.prepare('DELETE FROM books WHERE id = ?').run(id);
+  const index = books.findIndex((item) => item.id === id);
 
-  return result.changes > 0;
+  if (index === -1) {
+    return false;
+  }
+
+  books.splice(index, 1);
+  return true;
 };
 
 module.exports = {
