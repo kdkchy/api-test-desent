@@ -1,7 +1,9 @@
 const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 
-const databasePath = path.join(__dirname, 'app.sqlite');
+const databasePath =
+  process.env.DATABASE_PATH ||
+  (process.env.VERCEL ? path.join('/tmp', 'app.sqlite') : path.join(__dirname, 'app.sqlite'));
 let database;
 
 const getDatabase = () => {
