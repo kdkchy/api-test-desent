@@ -47,8 +47,22 @@ const createBook = ({ title, author = null, year = null }) => {
   return cloneBook(book);
 };
 
-const getBooks = () => {
-  return books.map(cloneBook);
+const getBooks = ({ author = null, page = null, limit = null } = {}) => {
+  let results = books;
+
+  if (author) {
+    const normalizedAuthor = author.toLowerCase();
+    results = results.filter((book) => {
+      return typeof book.author === 'string' && book.author.toLowerCase().includes(normalizedAuthor);
+    });
+  }
+
+  if (page !== null && limit !== null) {
+    const start = (page - 1) * limit;
+    results = results.slice(start, start + limit);
+  }
+
+  return results.map(cloneBook);
 };
 
 const getBookById = (id) => {

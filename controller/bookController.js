@@ -16,9 +16,13 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', requireAuth, (req, res) => {
-  const books = bookService.getBooks();
+  const result = bookService.getBooks(req.query);
 
-  return res.status(200).json(books);
+  if (result.error) {
+    return sendError(res, result.error.message, result.error.statusCode);
+  }
+
+  return res.status(200).json(result.data);
 });
 
 router.get('/:id', (req, res) => {

@@ -47,8 +47,39 @@ const deleteBook = (idParam) => {
   };
 };
 
-const getBooks = () => {
-  return bookRepo.getBooks();
+const getBooks = (query = {}) => {
+  const author = typeof query.author === 'string' ? query.author.trim() : null;
+  const pageResult = parsePositiveIntegerQuery(query.page, 'page');
+
+  if (pageResult.error) {
+    return pageResult;
+  }
+
+  const limitResult = parsePositiveIntegerQuery(query.limit, 'limit');
+
+  if (limitResult.error) {
+    return limitResult;
+  }
+
+  const page = pageResult.value;
+  const limit = limitResult.value;
+
+  if ((page === null && limit !== null) || (page !== null && limit === null)) {
+    return {
+      error: {
+        message: 'Both page and limit are required for pagination',
+        statusCode: 400,
+      },
+    };
+  }
+
+  return {
+    data: bookRepo.getBooks({
+      author: author || null,
+      page,
+      limit,
+    }),
+  };
 };
 
 const getBookById = (idParam) => {
@@ -87,6 +118,25 @@ const parseBookId = (idParam) => {
   }
 
   return { id };
+};
+
+const parsePositiveIntegerQuery = (value, name) => {
+  if (value === undefined) {
+    return { value: null };
+  }
+
+  const parsed = Number(value);
+
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    return {
+      error: {
+        message: `${name} must be a positive integer`,
+        statusCode: 400,
+      },
+    };
+  }
+
+  return { value: parsed };
 };
 
 const updateBook = (idParam, body) => {
