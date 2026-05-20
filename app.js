@@ -28,7 +28,12 @@ const createApp = () => {
 if (require.main === module) {
   const app = createApp();
 
-  app.listen(port, () => {
+  app.listen(port, (error) => {
+    if (error) {
+      console.error(`Failed to start API on port ${port}: ${error.message}`);
+      process.exit(1);
+    }
+
     console.log(`API listening on port ${port}`);
   });
 }
