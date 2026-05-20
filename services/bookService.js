@@ -4,6 +4,7 @@ const createBook = (body) => {
   const payload = body || {};
   const title = typeof payload.title === 'string' ? payload.title.trim() : '';
   const author = typeof payload.author === 'string' ? payload.author.trim() : null;
+  const year = payload.year;
 
   if (!title) {
     return {
@@ -18,6 +19,7 @@ const createBook = (body) => {
     data: bookRepo.createBook({
       title,
       author: author || null,
+      year,
     }),
   };
 };

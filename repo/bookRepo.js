@@ -5,12 +5,13 @@ const getTimestamp = () => new Date().toISOString();
 
 const cloneBook = (book) => ({ ...book });
 
-const createBook = ({ title, author = null }) => {
+const createBook = ({ title, author = null, year = null }) => {
   const now = getTimestamp();
   const book = {
     id: nextBookId,
     title,
     author,
+    year,
     created_at: now,
     updated_at: now,
   };

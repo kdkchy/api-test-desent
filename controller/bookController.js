@@ -11,13 +11,13 @@ router.post('/', (req, res) => {
     return sendError(res, result.error.message, result.error.statusCode);
   }
 
-  return sendSuccess(res, result.data, 'Book created', 201);
+  return res.status(201).json(result.data);
 });
 
 router.get('/', (req, res) => {
   const books = bookService.getBooks();
 
-  return sendSuccess(res, books, 'Books retrieved');
+  return res.status(200).json(books);
 });
 
 router.get('/:id', (req, res) => {
@@ -27,7 +27,7 @@ router.get('/:id', (req, res) => {
     return sendError(res, result.error.message, result.error.statusCode);
   }
 
-  return sendSuccess(res, result.data, 'Book retrieved');
+  return res.status(200).json(result.data);
 });
 
 router.put('/:id', (req, res) => {
