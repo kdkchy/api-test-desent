@@ -32,7 +32,7 @@ const getBookById = (id) => {
   return book ? cloneBook(book) : undefined;
 };
 
-const updateBook = (id, { title, author = null }) => {
+const updateBook = (id, { title, author = null, year = null }) => {
   const book = books.find((item) => item.id === id);
 
   if (!book) {
@@ -41,6 +41,7 @@ const updateBook = (id, { title, author = null }) => {
 
   book.title = title;
   book.author = author;
+  book.year = year;
   book.updated_at = getTimestamp();
 
   return cloneBook(book);

@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendError, sendSuccess } = require('../infra/response/defaultResponse');
+const { sendError } = require('../infra/response/defaultResponse');
 const bookService = require('../services/bookService');
 
 const router = express.Router();
@@ -37,7 +37,7 @@ router.put('/:id', (req, res) => {
     return sendError(res, result.error.message, result.error.statusCode);
   }
 
-  return sendSuccess(res, result.data, 'Book updated');
+  return res.status(200).json(result.data);
 });
 
 router.delete('/:id', (req, res) => {
@@ -47,7 +47,7 @@ router.delete('/:id', (req, res) => {
     return sendError(res, result.error.message, result.error.statusCode);
   }
 
-  return sendSuccess(res, result.data, 'Book deleted');
+  return res.status(204).send();
 });
 
 module.exports = router;

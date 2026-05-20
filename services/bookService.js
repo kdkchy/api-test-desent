@@ -99,6 +99,7 @@ const updateBook = (idParam, body) => {
   const payload = body || {};
   const title = typeof payload.title === 'string' ? payload.title.trim() : '';
   const author = typeof payload.author === 'string' ? payload.author.trim() : null;
+  const year = payload.year;
 
   if (!title) {
     return {
@@ -112,6 +113,7 @@ const updateBook = (idParam, body) => {
   const book = bookRepo.updateBook(idResult.id, {
     title,
     author: author || null,
+    year,
   });
 
   if (!book) {
