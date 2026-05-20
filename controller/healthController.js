@@ -19,7 +19,7 @@ router.get('/ping', (req, res) => {
 router.post('/echo', (req, res) => {
   const echo = healthService.getEcho(req.body);
 
-  return sendSuccess(res, echo, 'Echo');
+  return res.status(200).json(echo);
 });
 
 module.exports = router;
