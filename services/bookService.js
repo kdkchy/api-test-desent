@@ -15,10 +15,19 @@ const createBook = (body) => {
     };
   }
 
+  if (!author) {
+    return {
+      error: {
+        message: 'Author is required',
+        statusCode: 400,
+      },
+    };
+  }
+
   return {
     data: bookRepo.createBook({
       title,
-      author: author || null,
+      author,
       year,
     }),
   };
@@ -111,8 +120,8 @@ const parseBookId = (idParam) => {
   if (!Number.isInteger(id) || id < 1) {
     return {
       error: {
-        message: 'Invalid book id',
-        statusCode: 400,
+        message: 'Book not found',
+        statusCode: 404,
       },
     };
   }
@@ -160,9 +169,18 @@ const updateBook = (idParam, body) => {
     };
   }
 
+  if (!author) {
+    return {
+      error: {
+        message: 'Author is required',
+        statusCode: 400,
+      },
+    };
+  }
+
   const book = bookRepo.updateBook(idResult.id, {
     title,
-    author: author || null,
+    author,
     year,
   });
 
