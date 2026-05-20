@@ -25,9 +25,9 @@ const createApp = () => {
   return app;
 };
 
-if (require.main === module) {
-  const app = createApp();
+const app = createApp();
 
+if (require.main === module) {
   app.listen(port, (error) => {
     if (error) {
       console.error(`Failed to start API on port ${port}: ${error.message}`);
@@ -38,4 +38,5 @@ if (require.main === module) {
   });
 }
 
-module.exports = createApp;
+module.exports = app;
+module.exports.createApp = createApp;
